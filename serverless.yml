@@ -12,7 +12,7 @@ params:
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs16.x
   environment:
     MONGODB_CONNECTION_STRING: ${param:connectionString}
     MONGODB_DB_NAME: ${param:dbName}
@@ -30,9 +30,6 @@ functions:
       - httpApi:
           path: /api/results
           method: post
-          request:
-            schemas:
-              application/json: ${file(./schemas/sendResponse.json)}
 
 plugins:
   - serverless-offline
