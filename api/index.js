@@ -1,4 +1,12 @@
-const { randomUUID } = require("crypto");
+const { MongoClient, ObjectId } = require("mongodb");
+
+const connectDatabase = async () => {
+  const client = new MongoClient(process.env.MONGODB_CONNECTION_STRING);
+
+  const connection = await client.connect();
+
+  return connection.db(process.env.MONGODB_DB_NAME);
+};
 
 const extractBody = (event) => {
   if (!event?.body)
@@ -21,7 +29,7 @@ module.exports.sendResponse = async (event) => {
 
   const correctQuestions = [3, 1, 0, 2];
 
-  const correctAnswers = answers.reduce((acc, answer, index) => {
+  const totalCorrectAnswers = answers.reduce((acc, answer, index) => {
     if (answer === correctQuestions[index]) {
       acc++;
     }
@@ -30,20 +38,22 @@ module.exports.sendResponse = async (event) => {
 
   const result = {
     name,
-    correctAnswers,
+    answers,
+    totalCorrectAnswers,
     totalAnswers: answers.length,
   };
 
-  const resultId = randomUUID();
-  previousResults.set(resultId, { response: body, result });
+  const db = await connectDatabase();
+  const collection = db.collection("results");
+  const { insertedId } = await collection.insertOne(result);
 
   return {
     statusCode: 201,
     body: JSON.stringify({
-      resultId,
+      insertedId,
       __hypermedia: {
         href: `/results.html`,
-        query: { id: resultId },
+        query: { id: insertedId },
       },
     }),
     headers: {
@@ -53,7 +63,13 @@ module.exports.sendResponse = async (event) => {
 };
 
 module.exports.getResult = async (event) => {
-  const result = previousResults.get(event.pathParameters.id);
+  const db = await connectDatabase();
+  const collection = db.collection("results");
+
+  const result = await collection.findOne({
+    _id: new ObjectId(event.pathParameters.id),
+  });
+
   if (!result)
     return {
       statusCode: 404,
