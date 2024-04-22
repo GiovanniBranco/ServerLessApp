@@ -7,7 +7,7 @@ params:
   default:
     dbName: "mydbmongocluster"
   dev:
-    connectionString: mongodb+srv://giovannipbranco1:XYfxcLqkcuTwcazm@${self:params.default.dbName}.1egtqg0.mongodb.net/
+    connectionString: mongodb+srv://giovannipbranco1:XYfxcLqkcuTwcazm@mydbmongocluster.1egtqg0.mongodb.net/
   prod:
 
 provider:
