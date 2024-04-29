@@ -7,11 +7,11 @@ params:
   default:
     dbName: "mydbmongocluster"
   dev:
-    connectionString: mongodb+srv://giovannipbranco1:XYfxcLqkcuTwcazm@mydbmongocluster.1egtqg0.mongodb.net/
+    connectionString: mongodb+srv://<username>:<passoword>@mydbmongocluster.1egtqg0.mongodb.net/
     salt: ufhakljiodfiawjklcansuidjçasklfbuikasjnfasbid
     jwtSecret: nçoijmiduisahdnoçakljwldoacmifmawvniv
   prod:
-    connectionString: mongodb+srv://giovannipbranco1:XYfxcLqkcuTwcazm@mydbmongocluster.1egtqg0.mongodb.net?retryWrites=true&w=majority&ssl=true.
+    connectionString: mongodb+srv://<username>:<passoword>@mydbmongocluster.1egtqg0.mongodb.net?retryWrites=true&w=majority&ssl=true.
     salt: ufhakljiodfiawjklcansuidjçasklfbuikasjnfasbid
     jwtSecret: nçoijmiduisahdnoçakljwldoacmifmawvniv
 
